@@ -45,79 +45,69 @@
             background-color: transparent;
             border-radius:10px;
             padding:10px;
-            font-weight:bold; 
+            font-weight:bold;
         }
-        .g-recaptcha{
-            border: 2px solid red;
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">  
-       <form class="formcls" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00D5j00000DjmCC" method="POST">
+    <div class="wrapper">
+       <form class="formcls" id="leadForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00D5j00000DjmCC" method="POST" onsubmit="return webToLead(event)">
         <input type=hidden name="oid" value="00D5j00000DjmCC">
         <input type=hidden name='captcha_settings' value='{"keyname":"SecrectKeyPairReCaptcha","fallback":"true","orgId":"00D5j00000DjmCC","ts":""}' required>
-        <input type=hidden name="retURL" value="https://website474097.nicepage.io/Page-10.html?version=3681a3da-5db1-4c25-bb3d-e6659be81734">       
+        <input type=hidden name="retURL" value="https://website474097.nicepage.io/Page-10.html?version=3681a3da-5db1-4c25-bb3d-e6659be81734">
           <div class="formWrapper">
-              <input class="inpt" id="firstName" placeholder=" First Name"  name="firstName" type="text"required />
-              <input class="inpt" id="lastName" placeholder=" Last Name"  maxlength="80" name="last_name" size="40" type="text" required />
-              <input class="inpt" id="email" placeholder=" Email" maxlength="80" name="email" size="40" type="email" required />
-              <input class="inpt" id="phone" placeholder=" Phone" maxlength="40" name="phone" size="40" type="text" required/>
-               <input class="inpt"  id="street" placeholder=" Street" name="Street"type="text" required />
-                <input class="inpt"  id="city" placeholder=" City" name="city"type="text" required/>
-                <input class="inpt" id="state" placeholder="state" type="text" name="state"required />
-                <input class="inpt" id="postalcode" placeholder=" PostalCode"  name="PostalCode" type="text" required/>
+              <input class="inpt" id="firstName" placeholder="First Name"  name="first_name" type="text" required />
+              <input class="inpt" id="lastName" placeholder="Last Name"  maxlength="80" name="last_name" size="40" type="text" required />
+              <input class="inpt" id="email" placeholder="Email" maxlength="80" name="email" size="40" type="email" required />
+              <input class="inpt" id="phone" placeholder="Phone" maxlength="40" name="phone" size="40" type="text" required/>
+               <input class="inpt" id="street" placeholder="Street" name="street" type="text" required />
+                <input class="inpt" id="city" placeholder="City" name="city" type="text" required/>
+                <input class="inpt" id="state" placeholder="State" type="text" name="state" required />
+                <input class="inpt" id="postalcode" placeholder="PostalCode" name="postal_code" type="text" required/>
           </div>
-          <div class="businessname"> 
-            <input  id="Business_name" placeholder=" Busineess Name if Applicable" name="state" style="height:50px;background-color: transparent; width:80vw;border-radius:10px;padding:10px;font-weight:bold;" type="text" />
+          <div class="businessname">
+            <input id="business_name" placeholder="Business Name if Applicable" name="business_name" style="height:50px;background-color: transparent; width:80vw;border-radius:10px;padding:10px;font-weight:bold;" type="text" />
         </div>
-           <div class="notes"> 
-            <input  id="notes" placeholder=" Notes" name="Notes" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;font-weight:bold;" type="text" /><br>
+           <div class="notes">
+            <input id="notes" placeholder="Notes" name="notes" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;font-weight:bold;" type="text" /><br>
         </div>
         <div class="submit">
-            <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>        
-            <input type="SUBMIT" label="SUBMIT" placeholder="SUBMIT" onclick="return webToLead()" style="border-radius:50px; height:50px; width:200px;background-color:transparent;">
-        </div></div>
+            <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>
+            <input type="submit" label="SUBMIT" placeholder="SUBMIT" style="border-radius:50px; height:50px; width:200px;background-color:transparent;">
+        </div>
+        <div class="error-message" id="error-message"></div>
        </form>
     </div>
 </body>
 <script src="https://www.google.com/recaptcha/api.js"></script>
-        <script>
-            function webToLead() {
-              var response = document.getElementById("g-recaptcha-response").value;
-                if (response.length == 0) {
-                  alert('Please ');
+<script>
+    function webToLead(event) {
+        event.preventDefault();
+        var response = grecaptcha.getResponse();
+        var errorMessageElement = document.getElementById("error-message");
 
-                }
-                var postData = {
-                    oid: '00D5j00000DjmCC',
-                first_name: document.getElementById('firstName')?.value,
-                last_name: document.getElementById('lastName')?.value,
-                email: document.getElementById('email')?.value,
-                phone: document.getElementById('phone')?.value,
-                street:document.getElementById('street')?.value,
-                city:document.getElementById('city')?.value,
-                state:document.getElementById('state')?.value,
-                PostalCode:document.getElementById('postalcode')?.value,
-                Business_name : document.getElementById('Business_name')?.value,
-                notes: document.getElementById('notes')?.value,
-                }
-                var fields = postData;
-                console.log('@@@ this is the fields :: '+JSON.stringify(fields));
-                var form = document.createElement("form");
-                form.method = "POST";
-                form.action ="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00D5j00000DjmCC";
-            }
-        </script>
-        <script>
-            function timestamp() { 
-            var response = document.getElementById("g-recaptcha-response"); 
-            if (response == null || response.value.trim() == "") 
-            {
-                var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);
-                elems["ts"] = JSON.stringify(new Date().getTime());
-                document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems); 
-            } 
-          } setInterval(timestamp, 500); 
-           </script>
+        if (response.length === 0) {
+            errorMessageElement.textContent = "Please complete the reCAPTCHA.";
+            return false;
+        }
+        
+        errorMessageElement.textContent = "";
+        document.getElementById("leadForm").submit();
+    }
+
+    function timestamp() {
+        var response = document.getElementById("g-recaptcha-response");
+        if (response == null || response.value.trim() == "") {
+            var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);
+            elems["ts"] = JSON.stringify(new Date().getTime());
+            document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems);
+        }
+    } 
+    setInterval(timestamp, 500);
+</script>
 </html>
