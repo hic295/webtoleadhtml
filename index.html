@@ -73,18 +73,18 @@
         </div>
         <div class="submit">
             <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>        
-            <input type="SUBMIT" label="SUBMIT" placeholder="SUBMIT" onclick="return webToLead()" style="border-radius:50px; height:50px; width:200px;background-color:transparent;">
+            <input type="SUBMIT" label="SUBMIT" placeholder="SUBMIT" onclick="return webToLead(e)" style="border-radius:50px; height:50px; width:200px;background-color:transparent;">
         </div></div>
        </form>
     </div>
 </body>
 <script src="https://www.google.com/recaptcha/api.js"></script>
         <script>
-            function webToLead() {
+            function webToLead(e) {
               var response = document.getElementById("g-recaptcha-response").value;
                 if (response.length == 0) {
-                    document.getElementsByClassName("g-recaptcha")[0].css('border', '1px solid red')
-                    return false; 
+                    e.preventDefault();
+                    $('.g-recaptcha div div').css('border', '1px solid red');
                 }
                 var postData = {
                     oid: '00D5j00000DjmCC',
