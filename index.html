@@ -80,7 +80,12 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
         <script>
             function webToLead() {
-                //e.preventDefault();
+                var response = document.getElementById("g-recaptcha-response").value;
+                if (response.length == 0) {
+                    alert("Please complete the CAPTCHA!");
+                    return false; // Prevent form submission
+                }
+              
                 var postData = {
                     oid: '00D5j00000DjmCC',
                 first_name: document.getElementById('firstName')?.value,
