@@ -15,8 +15,7 @@
             justify-content: center;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(142,136,50,0.14);
-            background-color: white;
+            background-color:rgba(142,136,50,0.14);
             position: relative;
         }
         .formcls{
@@ -25,7 +24,7 @@
             background-color:transparent;
             gap: 1rem;
             width: 80vw;
-            height: 80vh;
+            height: 100vh;
         }
         .formWrapper{
             margin-top: 15px;
@@ -43,54 +42,64 @@
         .inpt{
             height:50px;
             background-color: transparent;
+            border: 1px solid black;
             border-radius:10px;
             padding:10px;
-            font-weight:bold; 
         }
-        .g-recaptcha{
-            border: 2px solid red;
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .subBtn:hover{
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">  
-       <form class="formcls" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00D5j00000DjmCC" method="POST">
-        <input type=hidden name="oid" value="00D5j00000DjmCC">
-        <input type=hidden name='captcha_settings' value='{"keyname":"SecrectKeyPairReCaptcha","fallback":"true","orgId":"00D5j00000DjmCC","ts":""}' required>
-        <input type=hidden name="retURL" value="https://website474097.nicepage.io/Page-10.html?version=3681a3da-5db1-4c25-bb3d-e6659be81734">       
+    <div class="wrapper">
+       <form class="formcls" id="leadForm" action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1" method="POST" onsubmit="return webToLead(event)">
+        <input type=hidden name="oid" value="00DAu000003mWK1">
+        <input type=hidden name='captcha_settings' value='{"keyname":"webToLeadSecretKeyPair","fallback":"true","orgId":"00DAu000003mWK1","ts":""}' required>
+        <input type=hidden name="retURL" value="https://www.google.com">
           <div class="formWrapper">
-              <input class="inpt" id="firstName" placeholder=" First Name"  name="firstName" type="text"required />
-              <input class="inpt" id="lastName" placeholder=" Last Name"  maxlength="80" name="last_name" size="40" type="text" required />
-              <input class="inpt" id="email" placeholder=" Email" maxlength="80" name="email" size="40" type="email" required />
-              <input class="inpt" id="phone" placeholder=" Phone" maxlength="40" name="phone" size="40" type="text" required/>
-               <input class="inpt"  id="street" placeholder=" Street" name="Street"type="text" required />
-                <input class="inpt"  id="city" placeholder=" City" name="city"type="text" required/>
-                <input class="inpt" id="state" placeholder="state" type="text" name="state"required />
-                <input class="inpt" id="postalcode" placeholder=" PostalCode"  name="PostalCode" type="text" required/>
+              <input class="inpt" id="firstName" placeholder="First Name"  name="first_name" type="text" required />
+              <input class="inpt" id="lastName" placeholder="Last Name"  maxlength="80" name="last_name" size="40" type="text" required />
+              <input class="inpt" id="email" placeholder="Email" maxlength="80" name="email" size="40" type="email" required />
+              <input class="inpt" id="phone" placeholder="Phone" maxlength="40" name="phone" size="40" type="text" required/>
+               <input class="inpt" id="street" placeholder="Street" name="street" type="text" required />
+                <input class="inpt" id="city" placeholder="City" name="city" type="text" required/>
+                <input class="inpt" id="state" placeholder="State" type="text" name="state" required />
+                <input class="inpt" id="postalcode" placeholder="PostalCode" name="postal_code" type="text" required/>
           </div>
-          <div class="businessname"> 
-            <input  id="Business_name" placeholder=" Busineess Name if Applicable" name="state" style="height:50px;background-color: transparent; width:80vw;border-radius:10px;padding:10px;font-weight:bold;" type="text" />
+          <div class="businessname">
+            <input id="business_name" placeholder="Business Name if Applicable" name="business_name" style="height:50px; background-color: transparent; color:transparent; width:80vw;border:1px solid black; border-radius:10px;padding:10px;" type="text" />
         </div>
-           <div class="notes"> 
-            <input  id="notes" placeholder=" Notes" name="Notes" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;font-weight:bold;" type="text" /><br>
+           <div class="notes">
+            <input id="notes" placeholder="Notes" name="notes" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;border:1px solid black;" type="text" /><br>
         </div>
         <div class="submit">
-            <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>        
-            <input type="SUBMIT" label="SUBMIT" placeholder="SUBMIT" onclick="return webToLead()" style="border-radius:50px; height:50px; width:200px;background-color:transparent;">
-        </div></div>
+            <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>
+            <input class="subBtn" type="submit" label="SUBMIT" name="submit" onclick="webToLead()" placeholder="SUBMIT" style="border-radius:50px;border:1px solid black; height:50px; width:200px;background-color:transparent;">
+        </div>
+        <div class="error-message" id="error-message"></div>
        </form>
-    </div>
+     </div>
 </body>
 <script src="https://www.google.com/recaptcha/api.js"></script>
-        <script>
-            function webToLead() {
-              var response = document.getElementById("g-recaptcha-response").value;
-                if (response.length == 0) {
-                  alert('Please ');
-
-                }
-                var postData = {
-                    oid: '00D5j00000DjmCC',
+<script>
+    function webToLead() {
+   console.log('rahul');
+       var response = document.getElementById("g-recaptcha-response").value;   
+        if (response.length === 0) {
+            var errorMessageElement = document.getElementById("error-message");
+            errorMessageElement.textContent = "Please complete the reCAPTCHA.";
+            return false;
+        } 
+        errorMessageElement.textContent = "";
+       console.log('hello1');
+        var postData = {
+                    oid: '00DAu000003mWK1',
                 first_name: document.getElementById('firstName')?.value,
                 last_name: document.getElementById('lastName')?.value,
                 email: document.getElementById('email')?.value,
@@ -103,21 +112,21 @@
                 notes: document.getElementById('notes')?.value,
                 }
                 var fields = postData;
-                console.log('@@@ this is the fields :: '+JSON.stringify(fields));
+              console.log('hello2');
+              console.log('fields :',fields);
                 var form = document.createElement("form");
                 form.method = "POST";
-                form.action ="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00D5j00000DjmCC";
-            }
-        </script>
-        <script>
-            function timestamp() { 
-            var response = document.getElementById("g-recaptcha-response"); 
-            if (response == null || response.value.trim() == "") 
-            {
-                var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);
-                elems["ts"] = JSON.stringify(new Date().getTime());
-                document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems); 
-            } 
-          } setInterval(timestamp, 500); 
-           </script>
+                form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
+    }
+
+    function timestamp() {
+        var response = document.getElementById("g-recaptcha-response");
+        if (response == null || response.value.trim() == "") {
+            var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);
+            elems["ts"] = JSON.stringify(new Date().getTime());
+            document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems);
+        }
+    } 
+    setInterval(timestamp, 500);
+</script>
 </html>
