@@ -98,6 +98,7 @@
             return false;
         } 
         errorMessageElement.textContent = "";
+      console.log('hello1');
         var postData = {
                     oid: '00DAu000003mWK1',
                 first_name: document.getElementById('firstName')?.value,
@@ -112,6 +113,7 @@
                 notes: document.getElementById('notes')?.value,
                 }
                 var fields = postData;
+console.log('hello2');
                 var form = document.createElement("form");
                 form.method = "POST";
                 form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
