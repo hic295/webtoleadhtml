@@ -92,7 +92,7 @@
    console.log('rahul');
         event.preventDefault();
 
-        var response = grecaptcha.getResponse();
+      var response = document.getElementById("g-recaptcha-response").value;
         var errorMessageElement = document.getElementById("error-message");
         if (response.length === 0) {
             errorMessageElement.textContent = "Please complete the reCAPTCHA.";
