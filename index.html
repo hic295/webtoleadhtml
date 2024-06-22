@@ -49,7 +49,7 @@
         .error-message {
             color: red;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 2px;
         }
         .subBtn:hover{
             cursor: pointer;
@@ -60,8 +60,10 @@
     <div class="wrapper">
        <form class="formcls" id="leadForm" action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1" method="POST" onsubmit="return webToLead(event)">
         <input type=hidden name="oid" value="00DAu000003mWK1">
+      //please insure your keyname for recaptcha in your org [web to lead ] 
         <input type=hidden name='captcha_settings' value='{"keyname":"webToLeadSecretKeyPair","fallback":"true","orgId":"00DAu000003mWK1","ts":""}' required>
-        <input type=hidden name="retURL" value="https://www.google.com">
+      // after form submission you can change return url as you want
+        <input type=hidden name="retURL" value="https://wire.kajcreativeweb.com">
           <div class="formWrapper">
               <input class="inpt" id="firstName" placeholder="First Name"  name="first_name" type="text" required />
               <input class="inpt" id="lastName" placeholder="Last Name"  maxlength="80" name="last_name" size="40" type="text" required />
@@ -73,12 +75,13 @@
                 <input class="inpt" id="postalcode" placeholder="PostalCode" name="postal_code" type="text" required/>
           </div>
           <div class="businessname">
-            <input id="business_name" placeholder="Business Name if Applicable" name="business_name" style="height:50px; background-color: transparent; color:transparent; width:80vw;border:1px solid black; border-radius:10px;padding:10px;" type="text" />
+            <input id="business_name" placeholder="Business Name if Applicable" name="business_name" style="height:50px; background-color: transparent; width:80vw;border:1px solid black; border-radius:10px;padding:10px;" type="text" />
         </div>
            <div class="notes">
             <input id="notes" placeholder="Notes" name="notes" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;border:1px solid black;" type="text" /><br>
         </div>
         <div class="submit">
+         <!-- please isure your org web to lead recaptcha key pair -->
             <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>
             <input class="subBtn" type="submit" label="SUBMIT" name="submit" onclick="webToLead()" placeholder="SUBMIT" style="border-radius:50px;border:1px solid black; height:50px; width:200px;background-color:transparent;">
         </div>
@@ -89,7 +92,6 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     function webToLead() {
-   console.log('rahul');
        var response = document.getElementById("g-recaptcha-response").value;   
         if (response.length === 0) {
             var errorMessageElement = document.getElementById("error-message");
@@ -112,13 +114,10 @@
                 notes: document.getElementById('notes')?.value,
                 }
                 var fields = postData;
-              console.log('hello2');
-              console.log('fields :',fields);
                 var form = document.createElement("form");
                 form.method = "POST";
                 form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
     }
-
     function timestamp() {
         var response = document.getElementById("g-recaptcha-response");
         if (response == null || response.value.trim() == "") {
