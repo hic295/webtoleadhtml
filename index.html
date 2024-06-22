@@ -89,7 +89,9 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     function webToLead(event) {
+   console.log('rahul');
         event.preventDefault();
+
         var response = grecaptcha.getResponse().value;
         var errorMessageElement = document.getElementById("error-message");
         if (response.length === 0) {
