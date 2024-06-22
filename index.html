@@ -90,7 +90,7 @@
 <script>
     function webToLead(event) {
         event.preventDefault();
-        var response = grecaptcha.getResponse();
+        var response = grecaptcha.getResponse().value;
         var errorMessageElement = document.getElementById("error-message");
         if (response.length === 0) {
             errorMessageElement.textContent = "Please complete the reCAPTCHA.";
