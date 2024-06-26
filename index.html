@@ -72,13 +72,13 @@
                <input class="inpt" id="street" placeholder="Street" name="street" type="text" required />
                 <input class="inpt" id="city" placeholder="City" name="city" type="text" required/>
                 <input class="inpt" id="state" placeholder="State" type="text" name="state" required />
-                <input class="inpt" id="postalcode" placeholder="PostalCode" name="postal_code" type="text" required/>
+                <input class="inpt" id="zip" placeholder="PostalCode" name="zip" type="text" required/>
           </div>
           <div class="businessname">
-            <input id="business_name" placeholder="Business Name if Applicable" name="business_name" style="height:50px; background-color: transparent; width:80vw;border:1px solid black; border-radius:10px;padding:10px;" type="text" />
+            <input id="company" placeholder="Business Name if Applicable" name="company" style="height:50px; background-color: transparent; width:80vw;border:1px solid black; border-radius:10px;padding:10px;" type="text" />
         </div>
            <div class="notes">
-            <input id="notes" placeholder="Notes" name="notes" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;border:1px solid black;" type="text" /><br>
+            <input id="description" placeholder="Notes" name="description" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;border:1px solid black;" type="text" /><br>
         </div>
         <div class="submit">
          <!-- please isure your org web to lead recaptcha key pair -->
@@ -99,23 +99,9 @@
             return false;
         } 
         errorMessageElement.textContent = "";
-        var postData = {
-                    oid: '00DAu000003mWK1',
-                first_name: document.getElementById('firstName')?.value,
-                last_name: document.getElementById('lastName')?.value,
-                email: document.getElementById('email')?.value,
-                phone: document.getElementById('phone')?.value,
-                street:document.getElementById('street')?.value,
-                city:document.getElementById('city')?.value,
-                state:document.getElementById('state')?.value,
-                PostalCode:document.getElementById('postalcode')?.value,
-                Business_name : document.getElementById('Business_name')?.value,
-                notes: document.getElementById('notes')?.value,
-                }
-                var fields = postData;
-                var form = document.createElement("form");
-                form.method = "POST";
-                form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
+            var form = document.createElement("form");
+            form.method = "POST";
+            form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
     }
     function timestamp() {
         var response = document.getElementById("g-recaptcha-response");
