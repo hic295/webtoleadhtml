@@ -13,25 +13,32 @@
         .wrapper{
             display: flex;
             justify-content: center;
-            width: 100vw;
-            height: 100vh;
             background-color:rgba(142,136,50,0.14);
             position: relative;
+          	width :auto;
+         	 	height: auto;
+            border-radius: 25px;
         }
         .formcls{
             display: flex;
             flex-direction: column;
             background-color:transparent;
             gap: 1rem;
-            width: 80vw;
-            height: 100vh;
+            width: 75vw;
+            height: auto;
+            margin-top:35px;
+            margin-bottom:35px;
+            margin-left:50px;
+            margin-right:50px;
+          
         }
         .formWrapper{
             margin-top: 15px;
             background-color: transparent;
             display: grid;
-            gap: 2.5rem;
+            gap: 2.3rem;
             grid-template-columns: auto auto;
+          
         }
         .submit{
             display: flex;
@@ -39,13 +46,19 @@
             flex-direction: row;
             justify-content: space-between;
         }
-        .inpt{
-            height:50px;
-            background-color: transparent;
-            border: 1px solid black;
-            border-radius:10px;
-            padding:10px;
+        .inptcls{
+             padding:15px;
+             border: 1px solid black;
+             border-radius:10px;
+             height:50px;
         }
+      .businessname{
+        margin-top:15px;
+      }
+      .notes{
+         margin-top:15px;
+      }
+
         .error-message {
             color: red;
             font-weight: bold;
@@ -63,22 +76,31 @@
 <!--       please insure your keyname for recaptcha in your org [web to lead ]  -->
         <input type=hidden name='captcha_settings' value='{"keyname":"webToLeadSecretKeyPair","fallback":"true","orgId":"00DAu000003mWK1","ts":""}' required>
 <!--       after form submission you can change return url as you want -->
-        <input type=hidden name="retURL" value="https://wire.kajcreativeweb.com">
+        <input type=hidden name="retURL" value="https://wire.kajcreativeweb.com/thank-you/">
           <div class="formWrapper">
-              <input class="inpt" id="firstName" placeholder="First Name"  name="first_name" type="text" required />
-              <input class="inpt" id="lastName" placeholder="Last Name"  maxlength="80" name="last_name" size="40" type="text" required />
-              <input class="inpt" id="email" placeholder="Email" maxlength="80" name="email" size="40" type="email" required />
-              <input class="inpt" id="phone" placeholder="Phone" maxlength="40" name="phone" size="40" type="text" required/>
-               <input class="inpt" id="street" placeholder="Street" name="street" type="text" required />
-                <input class="inpt" id="city" placeholder="City" name="city" type="text" required/>
-                <input class="inpt" id="state" placeholder="State" type="text" name="state" required />
-                <input class="inpt" id="zip" placeholder="PostalCode" name="zip" type="text" required/>
+              <input class="inptcls" id="firstName" placeholder="First Name"  name="first_name" type="text" style=" background-color: transparent; padding-left: 24px;          
+             border: 1px solid black;" required />
+              <input class="inptcls" id="lastName" placeholder="Last Name" name="last_name" style=" background-color: transparent; padding-left: 24px;          
+             border: 1px solid black;" type="text" required />
+              <input class="inptcls" id="email" placeholder="Email" type="email" name="email" style=" background-color: transparent;  padding-left: 24px;         
+             border: 1px solid black;" required />
+              <input class="inptcls" id="phone" placeholder="Phone" name="phone" type="text" style=" background-color: transparent;   padding-left: 24px;        
+             border: 1px solid black;" required/>
+               <input class="inptcls" id="street" placeholder="Street" name="street" style=" background-color: transparent;  padding-left: 24px;         
+             border: 1px solid black;" type="text" required />
+                <input class="inptcls" id="city" placeholder="City" name="city" type="text" style=" background-color: transparent;  padding-left: 24px;         
+             border: 1px solid black;" required/>
+                <input class="inptcls" id="state" placeholder="Province" type="text" name="state" style=" background-color: transparent; padding-left: 24px;          
+             border: 1px solid black;" required />
+                <input class="inpclst" id="zip" placeholder="Postal Code" name="zip" type="text" style=" background-color: transparent; padding-left: 24px;          
+             border: 1px solid black; border-radius:10px;" required/>
           </div>
           <div class="businessname">
-            <input id="company" placeholder="Business Name if Applicable" name="company" style="height:50px; background-color: transparent; width:80vw;border:1px solid black; border-radius:10px;padding:10px;" type="text" />
+            <input type="hidden" id="leadSource" name="leadSource" value="Web"/>
+            <input id="company" placeholder="Business Name if Applicable" name="company" style="height:50px; background-color: transparent; width:75vw;border:1px solid black; border-radius:10px;padding:10px; padding-left: 24px;" type="text" />
         </div>
            <div class="notes">
-            <input id="description" placeholder="Notes" name="description" style="height:100px;background-color:transparent; width:80vw;border-radius:10px;padding:10px;border:1px solid black;" type="text" /><br>
+            <input id="description" placeholder="What can we help you with?" name="description" style="height:100px;background-color:transparent; width:75vw;border-radius:10px;padding:10px;border:1px solid black; padding-left: 24px;" type="text" required/><br>
         </div>
         <div class="submit">
          <!-- please isure your org web to lead recaptcha key pair -->
@@ -103,6 +125,14 @@
             form.method = "POST";
             form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
     }
+     // Set the LeadSource value
+     var leadSourceInput = document.getElementById("leadSource");
+     leadSourceInput.value = "Web Inquiry"; // Replace with your desired value
+ 
+     // Continue with form submission
+     var form = document.getElementById("form");
+     form.submit();
+     
     function timestamp() {
         var response = document.getElementById("g-recaptcha-response");
         if (response == null || response.value.trim() == "") {
