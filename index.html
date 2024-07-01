@@ -121,16 +121,15 @@
             return false;
         } 
         errorMessageElement.textContent = "";
+     var leadSourceInput = document.getElementById("leadSource");
+     leadSourceInput.value = "Web";
             var form = document.createElement("form");
             form.method = "POST";
             form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
     }
      // Set the LeadSource value
-     var leadSourceInput = document.getElementById("leadSource");
-     leadSourceInput.value = "Web";
- 
-     var form = document.getElementById("form");
-     form.submit();
+
+
      
     function timestamp() {
         var response = document.getElementById("g-recaptcha-response");
