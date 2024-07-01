@@ -79,28 +79,28 @@
         <input type=hidden name="retURL" value="https://wire.kajcreativeweb.com/thank-you/">
           <div class="formWrapper">
               <input class="inptcls" id="firstName" placeholder="First Name"  name="first_name" type="text" style=" background-color: transparent; padding-left: 24px;          
-             border: 1px solid black;" required />
+             border: 1px solid black; border-left:5px solid red" required />
               <input class="inptcls" id="lastName" placeholder="Last Name" name="last_name" style=" background-color: transparent; padding-left: 24px;          
-             border: 1px solid black;" type="text" required />
+             border: 1px solid black;border-left:5px solid red"" type="text" required />
               <input class="inptcls" id="email" placeholder="Email" type="email" name="email" style=" background-color: transparent;  padding-left: 24px;         
-             border: 1px solid black;" required />
+             border: 1px solid black;border-left:5px solid red;" required />
               <input class="inptcls" id="phone" placeholder="Phone" name="phone" type="text" style=" background-color: transparent;   padding-left: 24px;        
-             border: 1px solid black;" required/>
+             border: 1px solid black;border-left:5px solid red;" required/>
                <input class="inptcls" id="street" placeholder="Street" name="street" style=" background-color: transparent;  padding-left: 24px;         
-             border: 1px solid black;" type="text" required />
+             border: 1px solid black;border-left:5px solid red;" type="text" required />
                 <input class="inptcls" id="city" placeholder="City" name="city" type="text" style=" background-color: transparent;  padding-left: 24px;         
-             border: 1px solid black;" required/>
+             border: 1px solid black;border-left:5px solid red;" required/>
                 <input class="inptcls" id="state" placeholder="Province" type="text" name="state" style=" background-color: transparent; padding-left: 24px;          
-             border: 1px solid black;" required />
+             border: 1px solid black;border-left:5px solid red;" required />
                 <input class="inpclst" id="zip" placeholder="Postal Code" name="zip" type="text" style=" background-color: transparent; padding-left: 24px;          
-             border: 1px solid black; border-radius:10px;" required/>
+             border: 1px solid black; border-radius:10px;border-left:5px solid red;" required/>
           </div>
           <div class="businessname">
-            <input type="hidden" id="leadSource" name="LeadSource" value=""/>
+            <input id="LeadSource"name ="LeadSource" value ="Web"/>
             <input id="company" placeholder="Business Name if Applicable" name="company" style="height:50px; background-color: transparent; width:75vw;border:1px solid black; border-radius:10px;padding:10px; padding-left: 24px;" type="text" />
         </div>
            <div class="notes">
-            <input id="description" placeholder="What can we help you with?" name="description" style="height:100px;background-color:transparent; width:75vw;border-radius:10px;padding:10px;border:1px solid black; padding-left: 24px;" type="text" required/><br>
+            <input id="description" placeholder="What can we help you with?" name="description" style="height:100px;background-color:transparent; width:75vw;border-radius:10px;padding:10px;border:1px solid black; padding-left: 24px; border-left:5px solid red;" type="text" required/><br>
         </div>
         <div class="submit">
          <!-- please isure your org web to lead recaptcha key pair -->
@@ -121,16 +121,10 @@
             return false;
         } 
         errorMessageElement.textContent = "";
-     var leadSourceInput = document.getElementById("leadSource");
-     leadSourceInput.value = "Web";
-            // var form = document.createElement("form");
-            // form.method = "POST";
-            // form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
+            var form = document.createElement("form");
+            form.method = "POST";
+            form.action ="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
     }
-     // Set the LeadSource value
-
-
-     
     function timestamp() {
         var response = document.getElementById("g-recaptcha-response");
         if (response == null || response.value.trim() == "") {
