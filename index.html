@@ -114,9 +114,9 @@
             const parts = placeName.split(',');
             
             if (parts.length >= 3) {
-                document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim(); // Join all parts except the last two as street
-                document.getElementById('city-input').value = parts[parts.length - 2].trim(); // Second last part as city
-                document.getElementById('zip-input').value = parts[parts.length - 1].trim(); // Last part as ZIP code
+                document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim();
+                document.getElementById('city-input').value = parts[parts.length - 2].trim(); 
+                document.getElementById('zip-input').value = parts[parts.length - 1].trim();
             } else {
                 document.getElementById('street-input').value = parts[0].trim();
                 document.getElementById('city-input').value = '';
