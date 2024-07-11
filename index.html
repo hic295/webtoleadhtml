@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Auto-Suggest</title>
+    <title>Address Auto-Suggest</title>
     <style>
-      
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -13,26 +12,36 @@
         .autocomplete {
             position: relative;
             display: inline-block;
+            width: 300px; /* Set a fixed width for the input fields */
         }
         .autocomplete-items {
             position: absolute;
             border: 1px solid #ddd;
             border-top: none;
             z-index: 99;
-            top: 100%;
-            left: 0;
-            right: 0;
+            background-color: #fff;
+            max-height: 200px; /* Limit height to prevent overflow */
+            overflow-y: auto; /* Add scroll if needed */
+            width: 100%; /* Ensure the dropdown matches the input width */
         }
         .autocomplete-item {
             padding: 10px;
             cursor: pointer;
-            background-color: #fff;
         }
         .autocomplete-item:hover {
             background-color: #ddd;
         }
         .input-container {
             margin-bottom: 10px;
+        }
+        input {
+            width: 100%; /* Make inputs full width of the container */
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
         }
     </style>
 </head>
@@ -89,7 +98,7 @@
             suggestions.forEach(suggestion => {
                 const item = document.createElement('div');
                 item.classList.add('autocomplete-item');
-                item.innerHTML = `<strong>${suggestion.text}</strong>`;
+                item.innerHTML = `<strong>${suggestion.place_name}</strong>`;
                 item.addEventListener('click', () => {
                     fillAddressFields(suggestion);
                     closeAllLists();
@@ -99,14 +108,16 @@
         }
 
         function fillAddressFields(suggestion) {
-            const address = suggestion.place_name;
-            const parts = address.split(', ');
-            const street = parts[0] || '';
-            const zip = parts[parts.length - 2] || '';
+            const addressComponents = suggestion.context.reduce((acc, component) => {
+                if (component.id.includes('place')) acc.city = component.text;
+                if (component.id.includes('postcode')) acc.zip = component.text;
+                if (component.id.includes('address')) acc.street = component.text;
+                return acc;
+            }, { city: '', street: '', zip: '' });
 
-            document.getElementById('city-input').value = suggestion.text;
-            document.getElementById('street-input').value = street;
-            document.getElementById('zip-input').value = zip;
+            document.getElementById('city-input').value = addressComponents.city || '';
+            document.getElementById('street-input').value = addressComponents.street || '';
+            document.getElementById('zip-input').value = addressComponents.zip || '';
         }
 
         function closeAllLists() {
@@ -118,7 +129,6 @@
                 closeAllLists();
             }
         });
-
     </script>
 </body>
 </html>
