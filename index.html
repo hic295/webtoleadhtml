@@ -102,7 +102,7 @@
             const address = suggestion.place_name;
             const parts = address.split(', ');
             const street = parts[0] || '';
-            const zip = parts[parts.length - 2] || ''; // ZIP is usually second last in a US address
+            const zip = parts[parts.length - 2] || '';
 
             document.getElementById('city-input').value = suggestion.text;
             document.getElementById('street-input').value = street;
