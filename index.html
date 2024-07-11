@@ -104,16 +104,16 @@
 
             components.forEach(component => {
                 if (component.id.includes('street')) {
-                    street = component.text;
+                    street = component.locality;
                 }
                 if (component.id.includes('place')) {
-                    city = component.text;
+                    city = component.district.name;
                 }
                 if (component.id.includes('region')) {
-                    state = component.text;
+                    state = component.region.name;
                 }
                 if (component.id.includes('postcode')) {
-                    zip = component.text;
+                    zip = component.postcode;
                 }
             });
 
