@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Auto-Suggest</title>
     <style>
-      
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -64,7 +63,7 @@
         inputs.forEach(id => {
             document.getElementById(id).addEventListener('input', function() {
                 const value = this.value;
-                if (value.length < 2) { // Fetch suggestions only if the input is at least 2 characters
+                if (value.length < 2) {
                     closeAllLists();
                     return;
                 }
@@ -100,12 +99,23 @@
 
         function fillAddressFields(suggestion) {
             const address = suggestion.place_name;
-            const parts = address.split(', ');
-            const street = parts[0] || '';
-            const zip = parts[parts.length - 2] || '';
+            const components = suggestion.context || [];
+            let city = '', state = '', zip = '';
 
-            document.getElementById('city-input').value = suggestion.text;
-            document.getElementById('street-input').value = street;
+            components.forEach(component => {
+                if (component.id.includes('place')) {
+                    city = component.text;
+                }
+                if (component.id.includes('region')) {
+                    state = component.text;
+                }
+                if (component.id.includes('postcode')) {
+                    zip = component.text;
+                }
+            });
+
+            document.getElementById('city-input').value = city;
+            document.getElementById('street-input').value = address.split(',')[0].trim(); // Assuming the first part is the street
             document.getElementById('zip-input').value = zip;
         }
 
