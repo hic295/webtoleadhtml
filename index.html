@@ -96,10 +96,10 @@
 </head>
 <body>
     <div class="wrapper">
-       <form class="formcls" id="leadForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DHp000003USyC" method="POST" onsubmit="return webToLead(event)">
-        <input type=hidden name="oid" value="00DHp000003USyC">
+       <form class="formcls" id="leadForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1" method="POST" onsubmit="return webToLead(event)">
+        <input type=hidden name="oid" value="00DAu000003mWK1">
 <!--       please insure your keyname for recaptcha in your org [web to lead ]  -->
-        <input type=hidden name='captcha_settings' value='{"keyname":"WebToLeadKeyPairs","fallback":"true","orgId":"00DHp000003USyC","ts":""}' required>
+        <input type=hidden name='captcha_settings' value='{"keyname":"webToLeadSecretKeyPair","fallback":"true","orgId":"00DAu000003mWK1","ts":""}' required>
 <!--       after form submission you can change return url as you want -->
         <input type=hidden name="retURL" value="https://wire.kajcreativeweb.com/thank-you/">
           <div class="formWrapper">
@@ -132,7 +132,7 @@
         </div>
         <div class="submit">
          <!-- please isure your org web to lead recaptcha key pair -->
-            <div class="g-recaptcha" data-sitekey="6LcRmQUqAAAAAO_4hu-MPS5FFBqI16baf6vh0Fuf"></div>
+            <div class="g-recaptcha" data-sitekey="6LfcNP4pAAAAAFyWlE-KYqB3iahSgoWNzckqFOpT"></div>
             <input class="subBtn" type="submit" label="SUBMIT" name="submit" onclick="webToLead()" placeholder="SUBMIT"style="border-radius:50px;border:1px solid black; height:50px; width:200px;background-color:transparent;">
         </div>
         <div class="error-message" id="error-message"></div>
@@ -151,7 +151,7 @@
         errorMessageElement.textContent = "";
             var form = document.createElement("form");
             form.method = "POST";
-            form.action ="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DHp000003USyC";
+            form.action ="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DAu000003mWK1";
     }
     function timestamp() {
         var response = document.getElementById("g-recaptcha-response");
