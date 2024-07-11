@@ -62,72 +62,68 @@
         </div>
         <div id="autocomplete-list" class="autocomplete-items"></div>
     </div>
-
     <!-- Mapbox JavaScript API -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
     <script>
         const accessToken = 'pk.eyJ1IjoiaGljMjAyNCIsImEiOiJjbHloM2Z1N3QwMGU2MmlyNTk4a3ZkeG8zIn0.mL9YUF_i7BdV8fy3b0gNnw'; // Replace with your Mapbox access token
-
-        const inputs = ['city-input', 'street-input', 'zip-input'];
-
-        inputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', function() {
-                const value = this.value;
-                if (value.length < 2) { // Fetch suggestions only if the input is at least 2 characters
-                    closeAllLists();
-                    return;
-                }
-                fetchSuggestions(value);
-            });
+        document.getElementById('city-input').addEventListener('input', function() {
+            const value = this.value;
+            if (value.length < 2) { // Fetch suggestions only if the input is at least 2 characters
+                closeAllLists();
+                return;
+            }
+            fetchSuggestions(value, 'place', 'city-input');
         });
-
-        function fetchSuggestions(query) {
-            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${accessToken}`)
+        document.getElementById('street-input').addEventListener('input', function() {
+            const cityValue = document.getElementById('city-input').value;
+            const value = this.value;
+            if (value.length < 2 || !cityValue) { // Fetch suggestions only if the input is at least 2 characters and city is filled
+                closeAllLists();
+                return;
+            }
+            fetchSuggestions(value + ' ' + cityValue, 'address', 'street-input');
+        });
+        function fetchSuggestions(query, type, inputId) {
+            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?types=${type}&access_token=${accessToken}`)
                 .then(response => response.json())
                 .then(data => {
                     const suggestions = data.features;
-                    showSuggestions(suggestions);
+                    showSuggestions(suggestions, inputId);
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
-
-        function showSuggestions(suggestions) {
+        function showSuggestions(suggestions, inputId) {
             const listContainer = document.getElementById('autocomplete-list');
             listContainer.innerHTML = '';
-
             suggestions.forEach(suggestion => {
                 const item = document.createElement('div');
                 item.classList.add('autocomplete-item');
                 item.innerHTML = `<strong>${suggestion.place_name}</strong>`;
                 item.addEventListener('click', () => {
-                    fillAddressFields(suggestion);
+                    fillAddressFields(suggestion, inputId);
                     closeAllLists();
                 });
                 listContainer.appendChild(item);
             });
         }
-
-        function fillAddressFields(suggestion) {
-            // Example parsing for address components
+        function fillAddressFields(suggestion, inputId) {
             const placeName = suggestion.place_name;
-            console.log("placeName:",placeName);
             const parts = placeName.split(',');
-            
-            if (parts.length >= 3) {
-                document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim();
-                document.getElementById('city-input').value = parts[parts.length - 2].trim(); 
-                document.getElementById('zip-input').value = parts[parts.length - 1].trim();
-            } else {
-                document.getElementById('street-input').value = parts[0].trim();
-                document.getElementById('city-input').value = '';
-                document.getElementById('zip-input').value = '';
+            if (inputId === 'city-input') {
+                document.getElementById('city-input').value = parts[0].trim();
+            } else if (inputId === 'street-input') {
+                if (parts.length >= 3) {
+                    document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim();
+                    document.getElementById('zip-input').value = parts[parts.length - 1].trim();
+                } else {
+                    document.getElementById('street-input').value = parts[0].trim();
+                    document.getElementById('zip-input').value = '';
+                }
             }
         }
-
         function closeAllLists() {
             document.getElementById('autocomplete-list').innerHTML = '';
         }
-
         document.addEventListener('click', function(e) {
             if (!e.target.matches('#city-input, #street-input, #zip-input')) {
                 closeAllLists();
