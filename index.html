@@ -137,7 +137,7 @@
        </form>
      </div>
 </body>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initAutocomplete&libraries=places&v=weekly"defer></script>
+
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     function webToLead() {
@@ -163,86 +163,5 @@
     setInterval(timestamp, 500);
 
     
-</script>
-<script>
-
-let autocomplete;
-let streetFiled;
-let cityField;
-let stateField;
-let postalField;
-
-function initAutocomplete() {
-    streetFiled=document.querySelector("#street");
-    cityField = document.querySelector("#city");
-    stateField = document.querySelector("#state");
-    postalField = document.querySelector("#zip");
-
-  autocomplete = new google.maps.places.Autocomplete(address1Field, {
-    componentRestrictions: { country: ["us", "ca"] },
-    fields: ["address_components", "geometry"],
-    types: ["address"],
-  });
-
-
-  autocomplete.addListener("place_changed", fillInAddress);
-
-  // Optionally focus on the address1 field when the page loads
-  address1Field.focus();
-}
-
-// Populate the address fields with the selected address details
-function fillInAddress() {
-  // Get the selected place details from the autocomplete object
-  const place = autocomplete.getPlace();
-  let address1 = "";
-  let postcode = "";
-
-  // Loop through the address components to extract and format the address details
-  for (const component of place.address_components) {
-    const componentType = component.types[0];
-
-    switch (componentType) {
-      case "street_number":
-        address1 = `${component.long_name} ${address1}`;
-        break;
-
-      case "route":
-        address1 += component.short_name;
-        break;
-
-      case "postal_code":
-        postcode = `${component.long_name}${postcode}`;
-        break;
-
-      case "postal_code_suffix":
-        postcode = `${postcode}-${component.long_name}`;
-        break;
-
-      case "locality":
-        document.querySelector("#locality").value = component.long_name;
-        break;
-
-      case "administrative_area_level_1":
-        document.querySelector("#state").value = component.short_name;
-        break;
-
-      case "country":
-        document.querySelector("#country").value = component.long_name;
-        break;
-    }
-  }
-
-  // Set the address and postal code fields with the formatted address
-  address1Field.value = address1.trim();
-  postalField.value = postcode.trim();
-
-  // Optionally set focus on the second address line for additional information
-  cityField.focus();
-}
-
-// Make the initAutocomplete function globally accessible
-window.initAutocomplete = initAutocomplete;
-
 </script>
 </html>
