@@ -31,13 +31,27 @@
         .autocomplete-item:hover {
             background-color: #ddd;
         }
+        .input-container {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>City Auto-Suggest</h1>
     <div class="autocomplete">
-        <input id="city-input" type="text" placeholder="Start typing a city name">
-        <div id="autocomplete-list" class="autocomplete-items"></div>
+        <div class="input-container">
+            <label for="city-input">City:</label>
+            <input id="city-input" type="text" placeholder="Start typing a city name">
+            <div id="autocomplete-list" class="autocomplete-items"></div>
+        </div>
+        <div class="input-container">
+            <label for="street-input">Street:</label>
+            <input id="street-input" type="text" placeholder="Street" readonly>
+        </div>
+        <div class="input-container">
+            <label for="zip-input">ZIP Code:</label>
+            <input id="zip-input" type="text" placeholder="ZIP Code" readonly>
+        </div>
     </div>
 
     <!-- Mapbox JavaScript API -->
@@ -45,46 +59,59 @@
     <script>
       const accessToken = 'pk.eyJ1IjoiaGljMjAyNCIsImEiOiJjbHloM2Z1N3QwMGU2MmlyNTk4a3ZkeG8zIn0.mL9YUF_i7BdV8fy3b0gNnw'; // Replace with your Mapbox access token
 
-document.getElementById('city-input').addEventListener('input', function() {
-    const input = this.value;
-    if (input.length < 2) { // Fetch suggestions only if the input is at least 2 characters
-        closeAllLists();
-        return;
-    }
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(input)}.json?access_token=${accessToken}`)
-        .then(response => response.json())
-        .then(data => {
-            const suggestions = data.features;
-            showSuggestions(suggestions);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-});
+      document.getElementById('city-input').addEventListener('input', function() {
+          const input = this.value;
+          if (input.length < 2) { // Fetch suggestions only if the input is at least 2 characters
+              closeAllLists();
+              return;
+          }
+          fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(input)}.json?access_token=${accessToken}`)
+              .then(response => response.json())
+              .then(data => {
+                  const suggestions = data.features;
+                  showSuggestions(suggestions);
+              })
+              .catch(error => console.error('Error fetching data:', error));
+      });
 
-function showSuggestions(suggestions) {
-    const listContainer = document.getElementById('autocomplete-list');
-    listContainer.innerHTML = '';
+      function showSuggestions(suggestions) {
+          const listContainer = document.getElementById('autocomplete-list');
+          listContainer.innerHTML = '';
 
-    suggestions.forEach(suggestion => {
-        const item = document.createElement('div');
-        item.classList.add('autocomplete-item');
-        item.innerHTML = `<strong>${suggestion.text}</strong>`;
-        item.addEventListener('click', () => {
-            document.getElementById('city-input').value = suggestion.text;
-            closeAllLists();
-        });
-        listContainer.appendChild(item);
-    });
-}
+          suggestions.forEach(suggestion => {
+              const item = document.createElement('div');
+              item.classList.add('autocomplete-item');
+              item.innerHTML = `<strong>${suggestion.text}</strong>`;
+              item.addEventListener('click', () => {
+                  document.getElementById('city-input').value = suggestion.text;
+                  // Assuming that the first place result will have address components
+                  const address = suggestion.place_name;
+                  fillAdditionalFields(address);
+                  closeAllLists();
+              });
+              listContainer.appendChild(item);
+          });
+      }
 
-function closeAllLists() {
-    document.getElementById('autocomplete-list').innerHTML = '';
-}
+      function fillAdditionalFields(address) {
+          // Extracting street and ZIP code from address
+          const parts = address.split(', ');
+          const street = parts[0] || '';
+          const zip = parts[parts.length - 2] || ''; // ZIP is usually second last in a US address
 
-document.addEventListener('click', function(e) {
-    if (!e.target.matches('#city-input')) {
-        closeAllLists();
-    }
-});
+          document.getElementById('street-input').value = street;
+          document.getElementById('zip-input').value = zip;
+      }
+
+      function closeAllLists() {
+          document.getElementById('autocomplete-list').innerHTML = '';
+      }
+
+      document.addEventListener('click', function(e) {
+          if (!e.target.matches('#city-input')) {
+              closeAllLists();
+          }
+      });
 
     </script>
 </body>
