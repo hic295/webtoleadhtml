@@ -108,16 +108,19 @@
         }
 
         function fillAddressFields(suggestion) {
-            const addressComponents = suggestion.context.reduce((acc, component) => {
-                if (component.id.includes('place')) acc.city = component.text;
-                if (component.id.includes('postcode')) acc.zip = component.text;
-                if (component.id.includes('street')) acc.street = component.text;
-                return acc;
-            }, { city: '', street: '', zip: '' });
-
-            document.getElementById('city-input').value = addressComponents.city || '';
-            document.getElementById('street-input').value = addressComponents.street || '';
-            document.getElementById('zip-input').value = addressComponents.zip || '';
+            // Example parsing for address components
+            const placeName = suggestion.place_name;
+            const parts = placeName.split(',');
+            
+            if (parts.length >= 3) {
+                document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim(); // Join all parts except the last two as street
+                document.getElementById('city-input').value = parts[parts.length - 2].trim(); // Second last part as city
+                document.getElementById('zip-input').value = parts[parts.length - 1].trim(); // Last part as ZIP code
+            } else {
+                document.getElementById('street-input').value = parts[0].trim();
+                document.getElementById('city-input').value = '';
+                document.getElementById('zip-input').value = '';
+            }
         }
 
         function closeAllLists() {
