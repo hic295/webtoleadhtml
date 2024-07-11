@@ -110,6 +110,7 @@
         function fillAddressFields(suggestion) {
             // Example parsing for address components
             const placeName = suggestion.place_name;
+            console.log("placeName:",placeName);
             const parts = placeName.split(',');
             
             if (parts.length >= 3) {
