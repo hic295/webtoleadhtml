@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Auto-Suggest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .autocomplete {
+            position: relative;
+            display: inline-block;
+            width: 300px; /* Set a fixed width for the input fields */
+        }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            background-color: #fff;
+            max-height: 200px; /* Limit height to prevent overflow */
+            overflow-y: auto; /* Add scroll if needed */
+            width: 100%; /* Ensure the dropdown matches the input width */
+        }
+        .autocomplete-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .autocomplete-item:hover {
+            background-color: #ddd;
+        }
+        .input-container {
+            margin-bottom: 10px;
+        }
+        input {
+            width: 100%; /* Make inputs full width of the container */
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        label {
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Address Auto-Suggest</h1>
+    <div class="autocomplete">
+        <div class="input-container">
+            <label for="city-input">City:</label>
+            <input id="city-input" type="text" placeholder="City">
+        </div>
+        <div class="input-container">
+            <label for="street-input">Street:</label>
+            <input id="street-input" type="text" placeholder="Street">
+        </div>
+        <div class="input-container">
+            <label for="zip-input">ZIP Code:</label>
+            <input id="zip-input" type="text" placeholder="ZIP Code">
+        </div>
+        <div id="autocomplete-list" class="autocomplete-items"></div>
+    </div>
+    <!-- Mapbox JavaScript API -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <script>
+        const accessToken = 'pk.eyJ1IjoiaGljMjAyNCIsImEiOiJjbHloM2Z1N3QwMGU2MmlyNTk4a3ZkeG8zIn0.mL9YUF_i7BdV8fy3b0gNnw'; // Replace with your Mapbox access token
+        const inputs = ['city-input', 'street-input', 'zip-input'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', function() {
+                const value = this.value;
+                if (value.length < 2) { // Fetch suggestions only if the input is at least 2 characters
+                    closeAllLists();
+                    return;
+                }
+                fetchSuggestions(value);
+            });
+        });
+        function fetchSuggestions(query) {
+            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${accessToken}`)
+                .then(response => response.json())
+                .then(data => {
+                    const suggestions = data.features;
+                    showSuggestions(suggestions);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+        function showSuggestions(suggestions) {
+            const listContainer = document.getElementById('autocomplete-list');
+            listContainer.innerHTML = '';
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.classList.add('autocomplete-item');
+                item.innerHTML = `<strong>${suggestion.place_name}</strong>`;
+                item.addEventListener('click', () => {
+                    fillAddressFields(suggestion);
+                    closeAllLists();
+                });
+                listContainer.appendChild(item);
+            });
+        }
+        function fillAddressFields(suggestion) {
+            // Example parsing for address components
+            const placeName = suggestion.place_name;
+            console.log("placeName:",placeName);
+            const parts = placeName.split(',');
+            if (parts.length >= 3) {
+                document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim();
+                document.getElementById('city-input').value = parts[parts.length - 2].trim();
+                document.getElementById('zip-input').value = parts[parts.length - 1].trim();
+            } else {
+                document.getElementById('street-input').value = parts[0].trim();
+                document.getElementById('city-input').value = '';
+                document.getElementById('zip-input').value = '';
+            }
+        }
+        function closeAllLists() {
+            document.getElementById('autocomplete-list').innerHTML = '';
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.matches('#city-input, #street-input, #zip-input')) {
+                closeAllLists();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
