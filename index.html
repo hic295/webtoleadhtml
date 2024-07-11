@@ -110,7 +110,7 @@
         function fillAddressFields(suggestion) {
             const addressComponents = suggestion.context.reduce((acc, component) => {
                 if (component.id.includes('place')) acc.city = component.text;
-                if (component.id.includes('postcode')) acc.zip = component.postcode.name;
+                if (component.id.includes('postcode')) acc.zip = component.text;
                 if (component.id.includes('address')) acc.street = component.text;
                 return acc;
             }, { city: '', street: '', zip: '' });
