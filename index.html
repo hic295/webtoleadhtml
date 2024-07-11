@@ -106,9 +106,9 @@
             console.log("placeName:",placeName);
             const parts = placeName.split(',');
             if (parts.length >= 3) {
-                document.getElementById('street-input').value = parts.slice(0, -2).join(', ').trim();
-                document.getElementById('city-input').value = parts[parts.length - 2].trim();
-                document.getElementById('zip-input').value = parts[parts.length - 1].trim();
+                document.getElementById('street-input').value = parts[parts.length - 1].trim();
+                document.getElementById('city-input').value = parts.slice(0, -2).join(', ').trim();
+                document.getElementById('zip-input').value = parts[parts.length - 2].trim();
             } else {
                 document.getElementById('street-input').value = parts[0].trim();
                 document.getElementById('city-input').value = '';
