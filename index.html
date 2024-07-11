@@ -100,9 +100,12 @@
         function fillAddressFields(suggestion) {
             const address = suggestion.place_name;
             const components = suggestion.context || [];
-            let city = '', state = '', zip = '';
+            let street = '', city = '', state = '', zip = '';
 
             components.forEach(component => {
+                if (component.id.includes('street')) {
+                    street = component.text;
+                }
                 if (component.id.includes('place')) {
                     city = component.text;
                 }
@@ -114,9 +117,10 @@
                 }
             });
 
+            document.getElementById('street-input').value = street;
             document.getElementById('city-input').value = city;
-            document.getElementById('street-input').value = address.split(',')[0].trim(); // Assuming the first part is the street
             document.getElementById('zip-input').value = zip;
+            // Optional: You can also set the state if needed.
         }
 
         function closeAllLists() {
@@ -128,7 +132,6 @@
                 closeAllLists();
             }
         });
-
     </script>
 </body>
 </html>
