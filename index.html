@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Auto-Suggest</title>
     <style>
+      
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -36,7 +37,7 @@
     </style>
 </head>
 <body>
-    <h1>Address Autofill</h1>
+    <h1>Address Auto-Suggest</h1>
     <div class="autocomplete">
         <div class="input-container">
             <label for="city-input">City:</label>
@@ -63,7 +64,7 @@
         inputs.forEach(id => {
             document.getElementById(id).addEventListener('input', function() {
                 const value = this.value;
-                if (value.length < 2) {
+                if (value.length < 2) { // Fetch suggestions only if the input is at least 2 characters
                     closeAllLists();
                     return;
                 }
@@ -99,28 +100,13 @@
 
         function fillAddressFields(suggestion) {
             const address = suggestion.place_name;
-            const components = suggestion.context || [];
-            let street = '', city = '', state = '', zip = '';
+            const parts = address.split(', ');
+            const street = parts[0] || '';
+            const zip = parts[parts.length - 2] || '';
 
-            components.forEach(component => {
-                if (component.id.includes('street')) {
-                    street = component.locality;
-                }
-                if (component.id.includes('place')) {
-                    city = component.district.name;
-                }
-                if (component.id.includes('region')) {
-                    state = component.region.name;
-                }
-                if (component.id.includes('postcode')) {
-                    zip = component.postcode;
-                }
-            });
-
+            document.getElementById('city-input').value = suggestion.text;
             document.getElementById('street-input').value = street;
-            document.getElementById('city-input').value = city;
             document.getElementById('zip-input').value = zip;
-            // Optional: You can also set the state if needed.
         }
 
         function closeAllLists() {
@@ -132,6 +118,7 @@
                 closeAllLists();
             }
         });
+
     </script>
 </body>
 </html>
