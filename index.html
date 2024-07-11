@@ -116,6 +116,7 @@
              border: 1px solid black;border-left:5px solid red;color:black;" type="text" required />
                 <input class="inptcls" id="city" placeholder="City" name="city" type="text" style=" background-color: transparent;  padding-left: 24px;         
              border: 1px solid black;border-left:5px solid  red;color:black;" required/>
+             <div id="autocomplete-list" class="autocomplete-items"></div>
                 <input class="inptcls" id="state" placeholder="Province" type="text" name="state" style=" background-color: transparent; padding-left: 24px;          
              border: 1px solid black;border-left:5px solid red;color:black;" required />
                 <input class="inptcls" id="zip" placeholder="Postal Code" name="zip" type="text" style=" background-color: transparent; padding-left: 24px;          
@@ -160,8 +161,45 @@
             document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems);
         }
     } 
-    setInterval(timestamp, 500);
-
-    
+    setInterval(timestamp, 500);    
 </script>
+
+<script>
+    let city ="Delhi";
+    const apiKey = '2bdc002ad0d54ea5914f2749d35b9eb0'; // Replace with your API key
+    const apiUrl = 'https://api.geoapify.com/v1/geocode/search?text={city}&lang=en&limit=10&type=city&apiKey=2bdc002ad0d54ea5914f2749d35b9eb0';
+
+    const input = document.getElementById('city');
+    const autocompleteList = document.getElementById('autocomplete-list');
+
+    input.addEventListener('input', async () => {
+        const query = input.value;
+        
+        if (query.length < 3) {
+            autocompleteList.innerHTML = '';
+            return;
+        }
+        const response = await fetch(`${apiUrl}?q=${query}&appid=${apiKey}`);
+        const data = await response.json();
+        autocompleteList.innerHTML = '';
+
+        if (data && data.name) {
+            const item = document.createElement('div');
+            item.textContent = data.name;
+            item.classList.add('autocomplete-item');
+            item.addEventListener('click', () => {
+                input.value = data.name;
+                autocompleteList.innerHTML = '';
+            });
+            autocompleteList.appendChild(item);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target !== input) {
+            autocompleteList.innerHTML = '';
+        }
+    });
+</script>
+
 </html>
