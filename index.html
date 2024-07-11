@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Auto-Suggest</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .autocomplete {
+            position: relative;
+            display: inline-block;
+        }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+        .autocomplete-item {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+        .autocomplete-item:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>City Auto-Suggest</h1>
+    <div class="autocomplete">
+        <input id="city-input" type="text" placeholder="Start typing a city name">
+        <div id="autocomplete-list" class="autocomplete-items"></div>
+    </div>
+
+    <script>
+        const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+        const apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+
+        const input = document.getElementById('city-input');
+        const autocompleteList = document.getElementById('autocomplete-list');
+
+        input.addEventListener('input', async () => {
+            const query = input.value;
+            if (query.length < 3) {
+                autocompleteList.innerHTML = '';
+                return;
+            }
+            const response = await fetch(`${apiUrl}?q=${query}&appid=${apiKey}`);
+            const data = await response.json();
+            autocompleteList.innerHTML = '';
+
+            if (data && data.name) {
+                const item = document.createElement('div');
+                item.textContent = data.name;
+                item.classList.add('autocomplete-item');
+                item.addEventListener('click', () => {
+                    input.value = data.name;
+                    autocompleteList.innerHTML = '';
+                });
+                autocompleteList.appendChild(item);
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target !== input) {
+                autocompleteList.innerHTML = '';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+https://ui.shadcn.com/docs/components/command
